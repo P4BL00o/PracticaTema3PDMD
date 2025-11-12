@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="miEstiloBoton">
+        <item name="android:backgroundTint">#CDDC39</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   <style name="miEstilo" parent="@style/Theme.PracticaTema3PDMD">
+      <item name="android:textColor">#EC407A</item>
+   </style>
+
+</resources>

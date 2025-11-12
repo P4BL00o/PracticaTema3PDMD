@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyZodiac</string>
+    <string name="btnFecha">Introduzca la Fecha</string>
+    <string name="btnAceptar">Aceptar</string>
+    <string name="TextError">Seleccione una fecha valida</string>
+
+    <string name="TextEdad">r</string>
+    <string name="TextSigno">r</string>
+    <string name="btnVolver">Volver</string>
+
+</resources>
