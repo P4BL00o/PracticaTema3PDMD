@@ -26,50 +26,66 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
+                new androidx.core.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(android.view.View v, WindowInsetsCompat insets) {
+                        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                        return insets;
+                    }
+                }
+        );
 
         btnSeleccionarFecha = findViewById(R.id.btnFecha);
         btnAceptar = findViewById(R.id.btnAceptar);
 
-        btnSeleccionarFecha.setOnClickListener(v -> {
-            Calendar calendario = Calendar.getInstance();
-            int añoActual = calendario.get(Calendar.YEAR);
-            int mesActual = calendario.get(Calendar.MONTH);
-            int diaActual = calendario.get(Calendar.DAY_OF_MONTH);
+        // Listener del botón Seleccionar Fecha
+        btnSeleccionarFecha.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                Calendar calendario = Calendar.getInstance();
+                int añoActual = calendario.get(Calendar.YEAR);
+                int mesActual = calendario.get(Calendar.MONTH);
+                int diaActual = calendario.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog dialogoFecha = new DatePickerDialog(MainActivity.this,
-                    (DatePicker view, int year, int month, int dayOfMonth) -> {
-                        dia = dayOfMonth;
-                        mes = month + 1;
-                        anio = year;
-                        btnSeleccionarFecha.setText(dayOfMonth + "/" + mes + "/" + year);
-                    }, añoActual, mesActual, diaActual);
-            dialogoFecha.show();
-        });
-
-        btnAceptar.setOnClickListener(v -> {
-            Calendar hoy = Calendar.getInstance();
-            Calendar fechaSeleccionada = Calendar.getInstance();
-            fechaSeleccionada.set(anio, mes - 1, dia); // mes - 1 porque Calendar usa 0-11
-
-            // Validación: año mayor a 1900 y fecha no futura
-            if (anio > 1900 && !fechaSeleccionada.after(hoy)) {
-                int edad = calcularEdad(anio, mes, dia);
-                String signo = obtenerSignoZodiaco(dia, mes);
-
-                Intent intent = new Intent(MainActivity.this, Result.class);
-                intent.putExtra("edad", edad);
-                intent.putExtra("signo", signo);
-                startActivity(intent);
-            } else {
-                Toast.makeText(MainActivity.this, getString(R.string.TextError), Toast.LENGTH_SHORT).show();
+                DatePickerDialog dialogoFecha = new DatePickerDialog(MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                dia = dayOfMonth;
+                                mes = month + 1;
+                                anio = year;
+                                btnSeleccionarFecha.setText(dayOfMonth + "/" + mes + "/" + year);
+                            }
+                        }, añoActual, mesActual, diaActual);
+                dialogoFecha.show();
             }
         });
 
+        // Listener del botón Aceptar
+        btnAceptar.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                Calendar hoy = Calendar.getInstance();
+                Calendar fechaSeleccionada = Calendar.getInstance();
+                fechaSeleccionada.set(anio, mes - 1, dia); // mes - 1 porque Calendar usa 0-11
+
+                // Validación: año mayor a 1900 y fecha no futura
+                if (anio > 1900 && !fechaSeleccionada.after(hoy)) {
+                    int edad = calcularEdad(anio, mes, dia);
+                    String signo = obtenerSignoZodiaco(dia, mes);
+
+                    Intent intent = new Intent(MainActivity.this, Result.class);
+                    intent.putExtra("edad", edad);
+                    intent.putExtra("signo", signo);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, getString(R.string.TextError), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private int calcularEdad(int year, int month, int day) {

@@ -24,16 +24,21 @@ public class Result extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_result);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
+                new androidx.core.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(android.view.View v, WindowInsetsCompat insets) {
+                        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                        return insets;
+                    }
+                }
+        );
 
         txtEdad = findViewById(R.id.textViewEdad);
         txtSigno = findViewById(R.id.textViewSigno);
         imgSigno = findViewById(R.id.imageView);
-        btnVolver = findViewById(R.id.btnVolver); // Asegúrate de tener este botón en tu layout
+        btnVolver = findViewById(R.id.btnVolver);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -83,11 +88,14 @@ public class Result extends AppCompatActivity {
             }
         }
 
-        // Funcionalidad del botón para volver a MainActivity
-        btnVolver.setOnClickListener(v -> {
-            Intent intent = new Intent(Result.this, MainActivity.class);
-            startActivity(intent);
-            finish(); // Cierra esta actividad para evitar duplicados en el historial
+        // Listener del botón Volver
+        btnVolver.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                Intent intent = new Intent(Result.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
     }
 }

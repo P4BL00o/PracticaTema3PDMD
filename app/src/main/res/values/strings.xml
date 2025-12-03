@@ -4,8 +4,8 @@
     <string name="btnAceptar">Aceptar</string>
     <string name="TextError">Seleccione una fecha valida</string>
 
-    <string name="TextEdad">r</string>
-    <string name="TextSigno">r</string>
+    <string name="TextEdad"></string>
+    <string name="TextSigno"></string>
     <string name="btnVolver">Volver</string>
 
 </resources>
